@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <meta charset="utf-8"/>
+    <title>Simple Polylines</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 80%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 80%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+</head>
+
+<body>
+
+<div id="map"></div>
+<br/>
+<div id="description">
+    <p th:text="${routeDesc}"></p>
+</div>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+      // This example creates a 2-pixel-wide red polyline showing the path of
+      // the first trans-Pacific flight between Oakland, CA, and Brisbane,
+      // Australia which was made by Charles Kingsford Smith.
+
+      function initMap() {
+
+        var flightPlanCoordinates = [[${airportsArray}]];
+        console.log(flightPlanCoordinates);
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          mapTypeId: 'roadmap'
+        });
+
+        // draw polyline
+        var flightPath = new google.maps.Polyline({
+          path: flightPlanCoordinates,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        // add marker pointes for each airport
+        for (i = 0; i < flightPlanCoordinates.length; i++) {
+          var marker = new google.maps.Marker({
+            position: flightPlanCoordinates[i],
+            map: map
+          });
+        }
+
+        // center and zoom on the route
+        var bounds = new google.maps.LatLngBounds();
+          flightPath.getPath().forEach(function(latLng) {
+            bounds.extend(latLng);
+          });
+          map.fitBounds(bounds);
+
+        flightPath.setMap(map);
+      }
+/*]]>*/
+</script>
+
+<script async="async" defer="defer"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq0eXwG1yMF5zSE5DIluLMl2CK-dAXiiY&amp;callback=initMap">
+</script>
+
+</body>
+</html>

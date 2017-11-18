@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <meta charset="utf-8"/>
+    <title>Simple Polylines</title>
+</head>
+
+<body>
+
+<div id="map"></div>
+<br/>
+<div id="description">
+    <b>Insert route parameters:</b>
+    <form action="\routes" method="post">
+
+        <input type="text" name="from"/>
+        <input type="text" name="to"/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="submit" value="Submit"/>
+
+    </form>
+</div>
+
+</body>
+</html>
